@@ -1,4 +1,4 @@
-# Voice Chatbot UAS – STT, Gemini LLM, TTS Integration
+# Voice Chatbot – STT, Gemini LLM, TTS Integration
 
 Proyek UAS ini merupakan aplikasi chatbot berbasis suara yang memungkinkan pengguna berbicara langsung melalui antarmuka web. Sistem akan mengenali suara pengguna, mengubahnya menjadi teks (Speech-to-Text), memprosesnya menggunakan model bahasa besar (Gemini API), lalu mengubah hasil jawabannya kembali menjadi suara (Text-to-Speech).
 
