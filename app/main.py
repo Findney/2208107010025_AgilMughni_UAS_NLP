@@ -1,9 +1,10 @@
 import mimetypes
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 import os
 import tempfile
 import uuid
+import base64
 
 from .stt import transcribe_speech_to_text
 from .llm import generate_response
@@ -26,7 +27,7 @@ async def chat_endpoint(audio_file: UploadFile = File(...)):
         audio_file (UploadFile): File audio dalam format WAV
 
     Returns:
-        FileResponse: File audio respons dalam format WAV
+        JSONResponse: File audio respons dalam format WAV dan teks transkripsi
     """
     try:
         # Baca file audio yang diunggah
@@ -68,10 +69,17 @@ async def chat_endpoint(audio_file: UploadFile = File(...)):
                 detail=f"[ERROR] Output TTS bukan file WAV. MIME type: {mime_type}",
             )
 
-        # 4. Kirim file audio respons
-        print(f"[DEBUG] Sending audio file: {response_audio_path}")
-        return FileResponse(
-            response_audio_path, media_type="audio/wav", filename="response.wav"
+        # Baca file audio untuk dikirim
+        with open(response_audio_path, "rb") as f:
+            audio_content = f.read()
+
+        # Return both audio and text data
+        return JSONResponse(
+            content={
+                "audio": base64.b64encode(audio_content).decode("utf-8"),
+                "input_text": user_text,
+                "response_text": response_text_original,
+            }
         )
 
     except Exception as e:
