@@ -1,0 +1,8 @@
+.env
+app/coqui_utils
+app/whisper.cpp
+app/chat_history.json
+test/
+.gradio
+__pycache__
+*.pyc
